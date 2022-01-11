@@ -4,17 +4,12 @@ package perobobbot.blague;
 import lombok.NonNull;
 import lombok.Setter;
 import lombok.Synchronized;
-import lombok.experimental.ExtensionMethod;
 import lombok.extern.log4j.Log4j2;
 import perobobbot.blague.api.*;
 import perobobbot.chat.core.IO;
-import perobobbot.data.service.UserService;
-import perobobbot.data.service.ViewerIdentityService;
+import perobobbot.data.service.PlatformUserService;
 import perobobbot.extension.ExtensionBase;
-import perobobbot.lang.ChannelInfo;
-import perobobbot.lang.ExecutionContext;
-import perobobbot.lang.Looper;
-import perobobbot.lang.ViewerIdentity;
+import perobobbot.lang.*;
 import perobobbot.lang.fp.Value2;
 import perobobbot.oauth.BroadcasterIdentifier;
 import perobobbot.oauth.OAuthTokenIdentifierSetter;
@@ -42,19 +37,19 @@ public class JokeExtension extends ExtensionBase {
     private final @NonNull IO io;
     private final @NonNull TwitchService twitchService;
     private final @NonNull OAuthTokenIdentifierSetter oAuthTokenIdentifierSetter;
-    private final @NonNull ViewerIdentityService viewerIdentityService;
+    private final @NonNull PlatformUserService platformUserService;
 
     private final SayLoop sayLoop = new SayLoop();
 
     public JokeExtension(@NonNull IO io,
                          @NonNull TwitchService twitchService,
                          @NonNull OAuthTokenIdentifierSetter oAuthTokenIdentifierSetter,
-                         @NonNull ViewerIdentityService viewerIdentityService) {
+                         @NonNull PlatformUserService platformUserService) {
         super("Blague");
         this.io = io;
         this.twitchService = twitchService;
         this.oAuthTokenIdentifierSetter = oAuthTokenIdentifierSetter;
-        this.viewerIdentityService = viewerIdentityService;
+        this.platformUserService = platformUserService;
     }
 
     @Override
@@ -106,8 +101,8 @@ public class JokeExtension extends ExtensionBase {
     }
 
     private Mono<String> getChannelLanguage(@NonNull ChannelInfo channelInfo) {
-        var broadcasterId = viewerIdentityService.findIdentity(channelInfo.getPlatform(), channelInfo.getChannelName())
-                                                 .map(ViewerIdentity::getViewerId)
+        var broadcasterId = platformUserService.findPlatformUser(channelInfo.getPlatform(), channelInfo.getChannelName())
+                                                 .map(PlatformUser::getUserId)
                                                  .orElse(null);
 
         if (broadcasterId == null) {

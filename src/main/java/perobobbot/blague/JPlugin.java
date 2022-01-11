@@ -20,7 +20,7 @@ public class JPlugin extends ExtensionPlugin {
                         Requirements.IO,
                         Requirements.TWITCH_SERVICE,
                         Requirements.O_AUTH_TOKEN_IDENTIFIER_SETTER,
-                        Requirements.VIEWER_IDENTITY_SERVICE));
+                        Requirements.PLATFORM_USER_SERVICE));
     }
 
 }

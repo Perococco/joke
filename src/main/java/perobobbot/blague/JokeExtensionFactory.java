@@ -18,10 +18,10 @@ public class JokeExtensionFactory implements ExtensionFactory<JokeExtension> {
     @Override
     public @NonNull JokeExtension createExtension(@NonNull ModuleLayer pluginLayer, @NonNull ServiceProvider serviceProvider) {
         return new JokeExtension(
-                serviceProvider.getAnyService(Requirements.IO.getServiceType()),
-                serviceProvider.getAnyService(Requirements.TWITCH_SERVICE.getServiceType()),
-                serviceProvider.getAnyService(Requirements.O_AUTH_TOKEN_IDENTIFIER_SETTER.getServiceType()),
-                serviceProvider.getAnyService(Requirements.VIEWER_IDENTITY_SERVICE.getServiceType())
+                serviceProvider.getAnyService(Requirements.IO),
+                serviceProvider.getAnyService(Requirements.TWITCH_SERVICE),
+                serviceProvider.getAnyService(Requirements.O_AUTH_TOKEN_IDENTIFIER_SETTER),
+                serviceProvider.getAnyService(Requirements.PLATFORM_USER_SERVICE)
                 );
     }
 
